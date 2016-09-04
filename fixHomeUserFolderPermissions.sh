@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Variables initialisation
-version="fixHomeUserFolderPermissions v0.1 - 2016, Yvan Godard [godardyvan@gmail.com]"
+version="fixHomeUserFolderPermissions v0.2 - 2016, Yvan Godard [godardyvan@gmail.com]"
 SystemOS=$(sw_vers -productVersion | awk -F "." '{print $0}')
 SystemOSMajor=$(sw_vers -productVersion | awk -F "." '{print $1}')
 SystemOSMinor=$(sw_vers -productVersion | awk -F "." '{print $2}')
