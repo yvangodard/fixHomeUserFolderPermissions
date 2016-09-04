@@ -83,11 +83,12 @@ elif [[ ${SystemOSMajor} -eq 10 && ${SystemOSMinor} -le 10 ]]; then
 	    	chmod -R 700 /Users/${currentUser}
 	    	# Droit d'accès au dossier
 	        chmod 755 /Users/${currentUser}
-	        chmod -R 755 /Users/${currentUser}/Public/
-	        chmod -R 733 /Users/${currentUser}/Public/Drop\ Box/
-	        chmod -R 755 /Users/${currentUser}/Sites/
-	        chmod -R 644 /Users/${currentUser}/Sites/*
-	        chmod -R 755 /Users/${currentUser}/Sites/images/
+	        [ -d /Users/${currentUser}/Public ] && chmod -R 755 /Users/${currentUser}/Public/
+	        [ -d /Users/${currentUser}/Public/Drop\ Box ] && chmod -R 733 /Users/${currentUser}/Public/Drop\ Box/
+	        [ -d /Users/${currentUser}/Sites ] && chmod -R 755 /Users/${currentUser}/Sites/
+	        ls /Users/${currentUser}/Sites/* > /dev/null 2>&1
+			[ $? -eq 0 ] && chmod -R 644 /Users/${currentUser}/Sites/*
+	        [ -d /Users/${currentUser}/Sites/images ] && chmod -R 755 /Users/${currentUser}/Sites/images
 	    fi
 	    echo ""
 	done
