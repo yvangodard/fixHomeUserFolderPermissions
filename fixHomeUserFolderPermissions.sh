@@ -10,7 +10,7 @@ scriptDir=$(dirname "${0}")
 scriptName=$(basename "${0}")
 scriptNameWithoutExt=$(echo "${scriptName}" | cut -f1 -d '.')
 listUsers=$(mktemp /tmp/${scriptName}_listUsers.XXXXX)
-githubRemoteScript="https://raw.githubusercontent.com/yvangodard/trimEnabler-for-OS-X/master/trimEnabler.sh"
+githubRemoteScript="https://raw.githubusercontent.com/yvangodard/fixHomeUserFolderPermissions/master/fixHomeUserFolderPermissions.sh"
 
 # Exécutable seulement par root
 if [ `whoami` != 'root' ]; then
