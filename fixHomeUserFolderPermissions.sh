@@ -60,13 +60,11 @@ if [[ ${SystemOSMajor} -eq 10 && ${SystemOSMinor} -ge 11 ]] || [[ ${SystemOSMajo
 		echo "Traitement de l'utilisateur '${currentUser}' ..."
 		if [[ ${currentUser} == "Shared" ]]; then
 	        chmod -R 777 /Users/${currentUser}
-	        continue;
 	    else
 	    	# userID=$(dscl . -read /Users/${currentUser} UniqueID | awk '{print $2}')
 			userID=$(/usr/bin/id -u ${currentUser})
 			# Reset the users Home Folder permissions.
 			/usr/sbin/diskutil resetUserPermissions / ${userID}
-			continue;
 		fi
 		echo ""
 	done
@@ -75,7 +73,6 @@ elif [[ ${SystemOSMajor} -eq 10 && ${SystemOSMinor} -le 10 ]]; then
 		echo "Traitement de l'utilisateur '${currentUser}' ..."
 		if [[ ${currentUser} == "Shared" ]]; then
 	        chmod -R 777 /Users/${currentUser}
-	        continue;
 	    else
 	    	# Suppression des ACL
 	    	chmod -R -N /Users/${currentUser}
@@ -91,7 +88,6 @@ elif [[ ${SystemOSMajor} -eq 10 && ${SystemOSMinor} -le 10 ]]; then
 	        chmod -R 755 /Users/${currentUser}/Sites/
 	        chmod -R 644 /Users/${currentUser}/Sites/*
 	        chmod -R 755 /Users/${currentUser}/Sites/images/
-	        continue;
 	    fi
 	    echo ""
 	done
