@@ -91,8 +91,8 @@ elif [[ ${SystemOSMajor} -eq 10 && ${SystemOSMinor} -le 10 ]]; then
 	    fi
 	    echo ""
 	done
-	
 fi
+
 [ -e ${listUsers} ] && rm ${listUsers}
 echo "Fin du processus."
 exit 0
