@@ -53,21 +53,28 @@ if [[ $(checkUrl ${githubRemoteScript}) -eq 0 ]] && [[ $(md5 -q "$0") != $(curl 
 fi
 IFS=$OLDIFS
 
+ls -A1 /Users/ | grep -v Guest | grep -v ".localized" > ${listUsers}
+
 if [[ ${SystemOSMajor} -eq 10 && ${SystemOSMinor} -ge 11 ]] || [[ ${SystemOSMajor} -gt 10 ]]; then
-	#Get the UID
-	userID=$(/usr/bin/id -u $(/usr/bin/logname))
-	#Reset the users Home Folder permissions.
-	/usr/sbin/diskutil resetUserPermissions / $userID
-	echo ""
-	echo "Il est recommandé de rebooter après cette commande."
-	echo "Nous vous laissons 1 minute pour fermer et sauvegarder avant un reboot automatique."
-	sleep 60
-	shutdown -r now
-elif [[ ${SystemOSMajor} -eq 10 && ${SystemOSMinor} -le 10 ]]; then
-	ls -A1 /Users/ | grep -v Guest | grep -v ".localized" > ${listUsers}
 	for currentUser in $(cat ${listUsers}) ; do
+		echo "Traitement de l'utilisateur '${currentUser}' ..."
 		if [[ ${currentUser} == "Shared" ]]; then
-	        chmod -R 777 /Users/"$i"
+	        chmod -R 777 /Users/${currentUser}
+	        continue;
+	    else
+	    	# userID=$(dscl . -read /Users/${currentUser} UniqueID | awk '{print $2}')
+			userID=$(/usr/bin/id -u ${currentUser})
+			# Reset the users Home Folder permissions.
+			/usr/sbin/diskutil resetUserPermissions / ${userID}
+			continue;
+		fi
+		echo ""
+	done
+elif [[ ${SystemOSMajor} -eq 10 && ${SystemOSMinor} -le 10 ]]; then
+	for currentUser in $(cat ${listUsers}) ; do
+		echo "Traitement de l'utilisateur '${currentUser}' ..."
+		if [[ ${currentUser} == "Shared" ]]; then
+	        chmod -R 777 /Users/${currentUser}
 	        continue;
 	    else
 	    	# Suppression des ACL
@@ -86,11 +93,10 @@ elif [[ ${SystemOSMajor} -eq 10 && ${SystemOSMinor} -le 10 ]]; then
 	        chmod -R 755 /Users/${currentUser}/Sites/images/
 	        continue;
 	    fi
+	    echo ""
 	done
-	[ -e ${listUsers} ] && rm ${listUsers}
+	
 fi
+[ -e ${listUsers} ] && rm ${listUsers}
+echo "Fin du processus."
 exit 0
-
-
-
-
